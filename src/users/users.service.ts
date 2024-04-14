@@ -20,11 +20,11 @@ export class UsersService {
     });
   }
 
-  async save(user: User): Promise<void> {
-    await this.userRepository.save(user);
+  async save(user: User): Promise<any> {
+    return await this.userRepository.save(user);
   }
 
-  async delete(username: string): Promise<void> {
+  async delete(username: string): Promise<any> {
     await this.userRepository.delete({ username: username });
   }
 }

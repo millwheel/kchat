@@ -33,16 +33,16 @@ export class UsersController {
   }
 
   @Post()
-  async createUser(@Body() user: User): Promise<void> {
-    await this.usersService.save(user);
+  async createUser(@Body() user: User): Promise<any> {
+    const saved = await this.usersService.save(user);
     return Object.assign({
-      data: { ...user },
+      data: saved,
       status: HttpStatus.CREATED,
     });
   }
 
   @Delete(':username')
-  async deleteUser(@Param('username') username: string): Promise<void> {
+  async deleteUser(@Param('username') username: string): Promise<any> {
     await this.usersService.delete(username);
     return Object.assign({
       data: { username: username },
