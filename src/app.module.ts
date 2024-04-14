@@ -7,12 +7,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres', // Specify your database type
+      type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'chadmin',
-      password: '1234',
-      database: 'kchat-api',
+      username: 'season',
+      password: 'asdf',
+      database: 'kchat',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
