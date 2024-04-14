@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -8,7 +8,22 @@ export class UserController {
   }
 
   @Get('/:id')
-  getOne() {
-    return 'This will return one user';
+  getUser(@Param('id') id: string) {
+    return `User about :${id}`;
+  }
+
+  @Post()
+  createUser() {
+    return 'This creates new user';
+  }
+
+  @Put(':id')
+  updateUser(@Param('id') id: string) {
+    return `This update the user: ${id}`;
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id: string) {
+    return `This deletes the user: ${id}`;
   }
 }
