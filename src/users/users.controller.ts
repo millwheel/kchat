@@ -16,7 +16,7 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<User[]> {
-    const userList = this.usersService.findAll();
+    const userList = await this.usersService.findAll();
     return Object.assign({
       data: userList,
       status: HttpStatus.OK,
@@ -25,7 +25,7 @@ export class UsersController {
 
   @Get('/:username')
   async getUser(@Param('username') username: string): Promise<User> {
-    const user = this.usersService.findOne(username);
+    const user = await this.usersService.findOne(username);
     return Object.assign({
       data: user,
       status: HttpStatus.OK,
@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @Post()
-  async createUser(@Body() user: User): Promise<string> {
+  async createUser(@Body() user: User): Promise<void> {
     await this.usersService.save(user);
     return Object.assign({
       data: { ...user },
@@ -42,7 +42,7 @@ export class UsersController {
   }
 
   @Delete(':username')
-  async deleteUser(@Param('username') username: string): Promise<string> {
+  async deleteUser(@Param('username') username: string): Promise<void> {
     await this.usersService.delete(username);
     return Object.assign({
       data: { username: username },
