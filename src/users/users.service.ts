@@ -13,4 +13,18 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
+
+  findOne(username: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { username: username },
+    });
+  }
+
+  async save(user: User): Promise<void> {
+    await this.userRepository.save(user);
+  }
+
+  async delete(username: string): Promise<void> {
+    await this.userRepository.delete({ username: username });
+  }
 }
