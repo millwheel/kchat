@@ -22,4 +22,11 @@ export class Post extends BaseTimeEntity {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   writer: User;
+
+  constructor(title: string, content: string, writer: User) {
+    super(); // Assuming BaseTimeEntity needs to call super
+    this.title = title;
+    this.content = content;
+    this.writer = writer;
+  }
 }

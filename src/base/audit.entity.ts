@@ -21,13 +21,13 @@ export abstract class BaseTimeEntity extends BaseEntity {
   updatedAt: Date;
 
   @BeforeInsert()
-  prePersist() {
+  private prePersist() {
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
 
   @BeforeUpdate()
-  preUpdate() {
+  private preUpdate() {
     this.updatedAt = new Date();
   }
 }

@@ -1,14 +1,14 @@
 import { IsString } from 'class-validator';
 
-export class PostRequestDTO {
+export class PostRequestDto {
   @IsString()
   readonly title: string;
   @IsString()
   readonly content: string;
 }
 
-export class PostResponseDTO {
+export class PostResponseDto {
   title: string;
   content: string;
-  userId: string;
+  userId: number;
 }
