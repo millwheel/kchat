@@ -19,6 +19,9 @@ export class Post extends BaseTimeEntity {
   @Column()
   content: string;
 
+  @Column({ default: 0 })
+  likes: number;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   writer: User;
