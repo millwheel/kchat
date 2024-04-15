@@ -14,17 +14,15 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  findOne(username: string): Promise<User> {
-    return this.userRepository.findOne({
-      where: { username: username },
-    });
+  findOne(id: number): Promise<User> {
+    return this.userRepository.findOne({ where: { id: id } });
   }
 
   async save(user: User): Promise<User> {
     return await this.userRepository.save(user);
   }
 
-  async delete(username: string): Promise<DeleteResult> {
-    return await this.userRepository.delete({ username: username });
+  async delete(id: number): Promise<DeleteResult> {
+    return await this.userRepository.delete(id);
   }
 }

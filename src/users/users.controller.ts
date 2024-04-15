@@ -22,10 +22,10 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Get('/:username')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  async getUser(@Param('username') username: string): Promise<User> {
-    return await this.usersService.findOne(username);
+  async getUser(@Param('id') id: number): Promise<User> {
+    return await this.usersService.findOne(id);
   }
 
   @Post()
@@ -34,9 +34,9 @@ export class UsersController {
     return await this.usersService.save(user);
   }
 
-  @Delete(':username')
+  @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  async deleteUser(@Param('username') username: string): Promise<DeleteResult> {
-    return this.usersService.delete(username);
+  async deleteUser(@Param('id') id: number): Promise<DeleteResult> {
+    return this.usersService.delete(id);
   }
 }

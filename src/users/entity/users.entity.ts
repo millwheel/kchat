@@ -1,33 +1,36 @@
 import {
   Column,
   Entity,
-  PrimaryColumn,
+  Generated,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
 @Entity()
-@Unique(['username'])
 @Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @PrimaryColumn()
-  username: string;
-
   @Column()
-  password: string;
-
-  @Column()
-  name: string;
+  @Generated('uuid')
+  uuid: string;
 
   @Column()
   email: string;
 
   @Column()
+  password: string;
+
+  @Column({ name: 'first_name' })
+  firstName: string;
+
+  @Column({ name: 'last_name' })
+  lastName: string;
+
+  @Column()
   age: number;
 
-  @Column({ default: true })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 }
