@@ -17,7 +17,7 @@ export class Post extends BaseTimeEntity {
   title: string;
 
   @Column()
-  description: string;
+  content: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
