@@ -5,10 +5,12 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+import { BaseTimeEntity } from '../../base/audit.entity';
 
 @Entity()
 @Unique(['email'])
-export class User {
+@Unique(['uuid'])
+export class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
