@@ -30,16 +30,16 @@ export class PostsController {
     @Query('user-id') userId: number,
     @Body() postRequestDto: PostRequestDto,
   ) {
-    this.postsService.createPost(postRequestDto, userId);
+    return this.postsService.createPost(postRequestDto, userId);
   }
 
   @Put('/:id')
   updatePost(@Param('id') id: number, @Body() postRequestDto: PostRequestDto) {
-    this.postsService.updatePost(id, postRequestDto);
+    return this.postsService.updatePost(id, postRequestDto);
   }
 
   @Delete('/:id')
   deletePost(@Param('id') id: number) {
-    this.postsService.deletePost(id);
+    return this.postsService.deletePost(id);
   }
 }

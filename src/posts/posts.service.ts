@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entity/posts.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -15,7 +15,9 @@ export class PostsService {
   ) {}
 
   async getPosts(): Promise<PostResponseDto[]> {
-    const posts: Post[] = await this.postRepository.find();
+    const posts: Post[] = await this.postRepository.find({
+      relations: ['writer'],
+    });
     return posts.map((post: Post) => {
       return {
         title: post.title,
@@ -28,7 +30,11 @@ export class PostsService {
   async getPost(postId: number): Promise<PostResponseDto> {
     const post: Post = await this.postRepository.findOne({
       where: { id: postId },
+      relations: ['writer'],
     });
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${postId} not found.`);
+    }
     return {
       title: post.title,
       content: post.content,
@@ -60,6 +66,9 @@ export class PostsService {
     const post: Post = await this.postRepository.findOne({
       where: { id: postId },
     });
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${postId} not found.`);
+    }
     post.title = postRequestDto.title;
     post.content = postRequestDto.content;
     const saved: Post = await this.postRepository.save(post);
