@@ -14,6 +14,10 @@ export abstract class BaseTimeEntity extends BaseEntity {
   })
   createdAt: Date;
 
+  constructor() {
+    super();
+  }
+
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     name: 'updated_at',
