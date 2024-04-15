@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { Comment } from '../entity/comment.entity';
+import { CommentResponseDto } from './comment.dto';
 
 export class PostRequestDto {
   @IsString()
@@ -12,5 +12,5 @@ export class PostResponseDto {
   title: string;
   content: string;
   userId: number;
-  comments: Comment[];
+  comments: CommentResponseDto[];
 }

@@ -4,6 +4,7 @@ import { Post } from './entity/posts.entity';
 import { Repository } from 'typeorm';
 import { PostRequestDto, PostResponseDto } from './dto/post.dto';
 import { User } from '../users/entity/users.entity';
+import { Comment } from './entity/comment.entity';
 
 @Injectable()
 export class PostsService {
@@ -12,6 +13,8 @@ export class PostsService {
     private postRepository: Repository<Post>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
   ) {}
 
   private async findPostById(postId: number): Promise<Post> {
@@ -25,13 +28,30 @@ export class PostsService {
     return post;
   }
 
+  private async findCommentsByPost(post: Post): Promise<Comment[]> {
+    return await this.commentRepository.find({
+      where: { post: post },
+    });
+  }
+
   private mapPostToResponseDto(post: Post): PostResponseDto {
-    return {
-      title: post.title,
-      content: post.content,
-      userId: post.writer.id,
-      comments: post.comments,
-    };
+    const postResponseDto = new PostResponseDto();
+    postResponseDto.title = post.title;
+    postResponseDto.content = post.content;
+    postResponseDto.userId = post.writer.id;
+    return postResponseDto;
+  }
+
+  private mapCommentToResponseDto(
+    postResponseDto: PostResponseDto,
+    comments: Comment[],
+  ): PostResponseDto {
+    postResponseDto.comments = comments.map((comment) => ({
+      content: comment.content,
+      writerId: comment.writer.id,
+      writerName: comment.writer.name,
+    }));
+    return postResponseDto;
   }
 
   async getPosts(): Promise<PostResponseDto[]> {
@@ -43,7 +63,9 @@ export class PostsService {
 
   async getPost(postId: number): Promise<PostResponseDto> {
     const post = await this.findPostById(postId);
-    return this.mapPostToResponseDto(post);
+    const comments = await this.findCommentsByPost(post);
+    const postResponseDto = this.mapPostToResponseDto(post);
+    return this.mapCommentToResponseDto(postResponseDto, comments);
   }
 
   async createPost(
@@ -69,7 +91,9 @@ export class PostsService {
     post.title = postRequestDto.title;
     post.content = postRequestDto.content;
     const saved = await this.postRepository.save(post);
-    return this.mapPostToResponseDto(saved);
+    const comments = await this.findCommentsByPost(saved);
+    const postResponseDto = this.mapPostToResponseDto(post);
+    return this.mapCommentToResponseDto(postResponseDto, comments);
   }
 
   async deletePost(postId: number): Promise<void> {
