@@ -1,14 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entity/users.entity';
+import { DeleteResult } from 'typeorm';
 
 @Controller('users')
 export class UsersController {
@@ -16,37 +9,21 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<User[]> {
-    const userList = await this.usersService.findAll();
-    return Object.assign({
-      data: userList,
-      status: HttpStatus.OK,
-    });
+    return await this.usersService.findAll();
   }
 
   @Get('/:username')
   async getUser(@Param('username') username: string): Promise<User> {
-    const user = await this.usersService.findOne(username);
-    return Object.assign({
-      data: user,
-      status: HttpStatus.OK,
-    });
+    return await this.usersService.findOne(username);
   }
 
   @Post()
-  async createUser(@Body() user: User): Promise<any> {
-    const saved = await this.usersService.save(user);
-    return Object.assign({
-      data: saved,
-      status: HttpStatus.CREATED,
-    });
+  async createUser(@Body() user: User): Promise<User> {
+    return await this.usersService.save(user);
   }
 
   @Delete(':username')
-  async deleteUser(@Param('username') username: string): Promise<any> {
-    await this.usersService.delete(username);
-    return Object.assign({
-      data: { username: username },
-      status: HttpStatus.OK,
-    });
+  async deleteUser(@Param('username') username: string): Promise<DeleteResult> {
+    return this.usersService.delete(username);
   }
 }
