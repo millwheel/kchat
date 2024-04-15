@@ -38,6 +38,6 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
   ): void {
     this.logger.log(`Client Message: ${message} Client ID: ${client.id}`);
-    this.server.emit('message', message);
+    this.server.emit('receive', { message, clientId: client.id });
   }
 }
