@@ -10,9 +10,24 @@
       function sendMessage() {
         const input = document.getElementById("message");
         const message = input.value;
-        if (message.trim() !== "") {
-          socket.emit("message", message);
+        const room = document.getElementById("room").value;
+        if (message.trim() !== "" && room.trim() !== "") {
+          socket.emit("message", { room: room, message: message });
           input.value = "";
+        }
+      }
+
+      function joinRoom() {
+        const room = document.getElementById("room").value;
+        if (room.trim() !== "") {
+          socket.emit("joinRoom", room);
+        }
+      }
+
+      function leaveRoom() {
+        const room = document.getElementById("room").value;
+        if (room.trim() !== "") {
+          socket.emit("leaveRoom", room);
         }
       }
 
@@ -21,10 +36,19 @@
         element.innerHTML = `Client ${data.clientId}: ${data.message}`;
         document.getElementById("messages").appendChild(element);
       });
+
+      socket.on("roomNotification", function (message) {
+        const element = document.createElement("li");
+        element.innerHTML = `Notification: ${message}`;
+        document.getElementById("messages").appendChild(element);
+      });
     </script>
   </head>
   <body>
-    <input type="text" id="message" />
+    <input type="text" id="room" placeholder="Room ID" />
+    <button onclick="joinRoom()">Join Room</button>
+    <button onclick="leaveRoom()">Leave Room</button>
+    <input type="text" id="message" placeholder="Type your message here..." />
     <button onclick="sendMessage()">Send</button>
     <ul id="messages"></ul>
   </body>
